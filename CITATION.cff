@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using the metadata below.
+title: Tripartite TPF Arbitration Model
+abstract: >-
+  Tripartite game-theoretic Monte Carlo simulation of third-party funding
+  agreements in construction arbitration. Seven agreement terms are treated as
+  decision variables and evaluated over a synthetic population of construction
+  arbitration cases.
+type: software
+version: 1.0.0
+authors:
+  - family-names: Mohy
+    given-names: Amr A.
+  - family-names: Sanad
+    given-names: Haytham M.
+keywords:
+  - third-party funding
+  - construction arbitration
+  - game theory
+  - Monte Carlo simulation
+  - global sensitivity analysis
+license: MIT

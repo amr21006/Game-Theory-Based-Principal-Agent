@@ -1,0 +1,5 @@
+scenario,tpf_available,funding_share,funder_award_share,monitoring_intensity,settlement_control,adverse_cost_coverage,claimant_copay_share,staged_funding_efficiency,security_for_costs_probability,min_roi_multiple,description
+No TPF baseline,0,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,"Claimants rely on self-funding or accept DAAB/settlement outcomes."
+Conventional TPF,1,1.00,0.35,0.25,0.70,1.00,0.00,0.05,0.05,1.35,"Typical high funder share, high funder settlement control, limited monitoring."
+Regulated disclosure TPF,1,0.90,0.26,0.60,0.15,0.80,0.10,0.15,0.20,1.20,"Mandatory disclosure and higher security-for-costs exposure."
+Portfolio TPF,1,0.95,0.24,0.50,0.25,0.90,0.05,0.22,0.08,1.05,"Portfolio diversification reduces minimum required ROI and supports more claims."
