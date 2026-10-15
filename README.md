@@ -4,11 +4,15 @@ A tripartite game-theoretic Monte Carlo simulation of third-party funding
 (TPF) agreements in construction arbitration, covering the claimant, the
 respondent and the funder.
 
-The funding agreement itself is the object of analysis. Seven agreement terms -
-funding share, award share, monitoring intensity, settlement control, claimant
-co-payment, adverse-cost coverage and staged-funding efficiency - are treated
-as decision variables and evaluated over a synthetic population of construction
+The funding agreement itself is the object of analysis. Seven agreement terms are
+modeled - funding share, award share, monitoring intensity, settlement control,
+claimant co-payment, adverse-cost coverage and staged-funding efficiency. The first
+six are searched as decision variables; staged-funding efficiency follows from
+monitoring. All are evaluated over a synthetic population of construction
 arbitration cases.
+
+The supplemental materials of the accompanying paper (Tables S1 to S35) are
+deposited at https://doi.org/10.5281/zenodo.20598940.
 
 ## Scope of this repository
 
@@ -22,12 +26,12 @@ It does **not** contain any figure, table or report generation code.
 ## Install
 
 ```bash
-git clone <REPOSITORY-URL>
-cd tpf-arbitration-model
+git clone https://github.com/amr21006/Game-Theory-Based-Principal-Agent.git
+cd Game-Theory-Based-Principal-Agent
 pip install -r requirements.txt
 ```
 
-Python 3.11 or later. Dependencies: numpy, pandas, SALib.
+Python 3.11 or later. Dependencies: numpy, pandas, SALib (which installs SciPy).
 
 ## Quick start
 
@@ -73,17 +77,24 @@ parameterized form of the model used for the alternative specifications of the
 governance indicator and of the settlement functions. At its default settings it
 reproduces the primary model exactly.
 
+`src/tpf_param.py` provides `Params` and `evaluate`, a coefficient-parameterized
+form of the primary evaluator used by the robustness modules. It exposes the
+calibration constant of Eq. (1), the behavioral coefficients perturbed in Table
+S32, and an employer-and-subcontractor counterclaim extension. At `Params()` it
+reproduces `evaluate_scenario` exactly; `tests/test_param_equivalence.py` checks this.
+
 ## Layout
 
 ```
 src/tpf_model.py       case generator, scenario evaluator, payoffs,
                        settlement dynamics, objective function, bootstrap
 src/tpf_revision.py    parameterized model specification
+src/tpf_param.py       coefficient-parameterized evaluator for the robustness modules
 src/analysis.py        agreement-term grid search, Sobol decomposition,
                        plateau extent
 data/raw/              scenario definitions and public calibration targets
 examples/quickstart.py minimal end-to-end example
-tests/                 model tests and the four robustness modules
+tests/                 model tests, the equivalence test and the robustness modules
 ```
 
 ## Reproducibility
@@ -99,8 +110,29 @@ and `seed=1514`; the replication seeds are 1514, 2026, 2701, 31415 and 424242.
 python -m pytest tests -q
 ```
 
-The robustness modules write their result tables to
+The unit tests run the robustness modules on reduced populations.
+
+## Robustness modules
+
+```bash
+python tests/robustness_extensions/run_all_extensions.py
+```
+
+runs every module on the primary population (150,000 cases, seed 1514) in a few
+minutes and writes the result tables and a summary generated from them to
 `tests/robustness_extensions/outputs/`, which is not tracked.
+
+| Module | Check | Paper |
+|---|---|---|
+| `test_area1_coefficient_bounds.py` | eight behavioral coefficients varied by +/-50% | Table S32 |
+| `test_area2_unctad_construction_calibration.py` | recalibration to the 35.1% construction-sector investor success rate, with the five replication seeds | Table S33 |
+| `test_area3_legal_security_risk.py` | security-for-costs probability and adverse-cost coverage | Table S34 |
+| `test_area4_multiparty_structure.py` | employer and subcontractor counterclaim architecture | Table S35 |
+| `grid_checks.py` | settlement control extended to 0.70; search re-ranked without the settlement-alignment component | Results |
+
+Every module evaluates the primary model through `src/tpf_param.py` and scores each
+structure by the balanced objective of Eq. (15) against the no-funding baseline of
+the same specification.
 
 ## Data
 
